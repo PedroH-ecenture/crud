@@ -8,7 +8,13 @@ class UsuarioController extends Controller
 {
     public function index()
     {
-        return view('usuarios.index');
+        $usuarios = Usuario::orderByDesc('id')->get();
+        return view('usuarios.index', ['usuarios' => $usuarios]);
+    }
+
+    public function show(Usuario $usuario)
+    {
+        return view('usuarios.show', ['usuario' => $usuario]);
     }
 
     public function create()
@@ -16,9 +22,22 @@ class UsuarioController extends Controller
         return view('usuarios.create');
     }
 
-    public function update()
+    public function update(UsuarioRequest $request, Usuario $usuario)
     {
-        return view('usuarios.update');
+        // Logic to update the user
+        $request->validated();
+        $usuario->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+
+        return redirect()->route('usuarios.index')->with('success', 'Usuário atualizado com sucesso!');
+    }
+
+    public function edit(Usuario $usuario)
+    {
+        return view('usuarios.edit', ['usuario' => $usuario]);
     }
 
     public function store()
@@ -26,9 +45,11 @@ class UsuarioController extends Controller
         return view('usuarios.store');
     }
 
-    public function delete()
+    public function destroy(Usuario $usuario)
     {
-        return view('usuarios.delete');
+        $usuario->delete();
+
+        return redirect()->route('usuarios.index')->with('success', 'Usuário deletado com sucesso!');
     }
 
     public function list()
