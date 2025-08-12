@@ -4,9 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 
 class Usuario extends Model
 {
+    use HasFactory;
+
+    public $timestamps = false;
+
+    protected $table = 'usuarios';  // Especifica explicitamente o nome da tabela
+
     protected $fillable = [
         'name',
         'email',
@@ -20,7 +27,6 @@ class Usuario extends Model
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        // pra encriptografar a senha: 'password' => 'hashed',
     ];
-    use HasFactory;
 }
