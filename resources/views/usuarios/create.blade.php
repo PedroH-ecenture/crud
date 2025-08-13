@@ -89,6 +89,7 @@
             <input type="text" name="name" placeholder="Digite o nome" class="form-control" required>
             <input type="email" name="email" placeholder="Digite o e-mail" class="form-control" required>
             <input type="password" name="password" placeholder="Digite a senha" class="form-control" required>
+            <input type="password" name="password_confirmation" placeholder="Confirme a senha" class="form-control" required>
 
             <button type="submit" class="btn">Criar Usuário</button>
         </form>

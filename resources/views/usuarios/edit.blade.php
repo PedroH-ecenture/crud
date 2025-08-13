@@ -115,6 +115,12 @@
             <input type="password" id="password" name="password" value="{{ old('password', $usuario->password) }}" required>
         </div>
 
+
+        <div class="form-group">
+            <label for="password_confirmation">Confirme a senha:</label>
+            <input type="password" name="password_confirmation" value="{{ old('password', $usuario->password) }}" required>
+        </div>
+
         <button type="submit" class="btn">Atualizar Usuário</button>
     </form>
 </body>
