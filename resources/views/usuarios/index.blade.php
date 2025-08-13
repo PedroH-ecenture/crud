@@ -57,7 +57,19 @@
         <a href="{{ route('usuarios.create') }}" class="btn btn-sm mb-4">Criar Novo Usuário</a>
 
         @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+        <div class="alert alert-success" id="success-alert">
+            {{ session('success') }}
+        </div>
+        <script>
+            setTimeout(() => {
+                const alert = document.getElementById('success-alert');
+                if (alert) {
+                    alert.style.transition = 'opacity 0.5s';
+                    alert.style.opacity = '0';
+                    setTimeout(() => alert.remove(), 500);
+                }
+            }, 3000); // desaparece após 3 segundos
+        </script>
         @endif
 
         @forelse($usuarios as $usuario)
