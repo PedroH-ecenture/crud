@@ -42,17 +42,17 @@ class UsuarioController extends Controller
         return view('usuarios.edit', ['usuario' => $usuario]);
     }
 
-    public function store(UsuarioRequest $request, Usuario $usuario)
+    public function store(UsuarioRequest $request)
     {
-        // Logic to update the user
+        // Logic to store the user
         $request->validated();
-        $usuario->update([
+        Usuario::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
         ]);
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuário atualizado com sucesso!');
+        return redirect()->route('usuarios.index')->with('success', 'Usuário criado com sucesso!');
     }
 
     public function destroy(Usuario $usuario)
