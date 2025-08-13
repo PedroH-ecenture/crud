@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UsuarioRequest;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 
 class UsuarioController extends Controller
@@ -40,9 +42,17 @@ class UsuarioController extends Controller
         return view('usuarios.edit', ['usuario' => $usuario]);
     }
 
-    public function store()
+    public function store(UsuarioRequest $request, Usuario $usuario)
     {
-        return view('usuarios.store');
+        // Logic to update the user
+        $request->validated();
+        $usuario->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+
+        return redirect()->route('usuarios.index')->with('success', 'Usuário atualizado com sucesso!');
     }
 
     public function destroy(Usuario $usuario)
