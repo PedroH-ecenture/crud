@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UsuarioController;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("/", [UsuarioController::class, 'index'])->name('usuarios.index');
+Route::get("/", [LoginController::class, 'index'])->name('login');
+route::post("/login", [LoginController::class, 'loginProccess'])->name('login.proccess');
+
+route::get("/usuarios-index", [UsuarioController::class, 'index'])->name('usuarios.index');
 Route::get("/create-usuario", [UsuarioController::class, 'create'])->name('usuarios.create');
 Route::get("/show-usuario/{usuario}", [UsuarioController::class, 'show'])->name('usuarios.show');
 Route::get("/update-usuario/{usuario}", [UsuarioController::class, 'update'])->name('usuarios.update');

@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable; // <- muda aqui
+use Illuminate\Notifications\Notifiable;
 
-class Usuario extends Model
+class Usuario extends Authenticatable
 {
+    use HasFactory, Notifiable;
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -22,7 +25,5 @@ class Usuario extends Model
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        // 'password' => 'hashed',
     ];
-    use HasFactory;
 }
