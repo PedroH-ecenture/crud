@@ -6,20 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Usuário</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
-        html,
         body {
-            height: 100%;
-            margin: 0;
             background: #121212;
             color: #fff;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
             padding: 2rem;
+            min-height: 100vh;
         }
 
         h1 {
@@ -30,18 +24,13 @@
             margin-bottom: 1rem;
         }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #333;
-            border-radius: 4px;
+        .form-control {
             background: #1e1e1e;
+            border: 1px solid #333;
             color: #fff;
         }
 
-        input::placeholder {
+        .form-control::placeholder {
             color: #888;
         }
 
@@ -51,23 +40,16 @@
             border: 1px solid #444;
             padding: 0.35rem 0.9rem;
             font-size: 0.9rem;
-            text-decoration: none;
-            display: inline-block;
-            width: auto;
         }
 
         .btn:hover {
             background: #444;
-            color: #fff;
-            text-decoration: none;
         }
 
         .alert-danger {
             background: #5a1e1e;
             border-color: #7a2a2a;
             color: #fff;
-            padding: 0.75rem 1rem;
-            margin-bottom: 1rem;
         }
 
         a.back-link {
@@ -78,6 +60,19 @@
         }
 
         a.back-link:hover {
+            color: #fff;
+        }
+
+        /* Ícone olho proporcional ao input */
+        .input-group-text {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-left: none;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .input-group-text:hover {
             color: #fff;
         }
     </style>
@@ -98,31 +93,57 @@
     </div>
     @endif
 
-    <form action="{{ route('usuarios.update', ['usuario' => $usuario->id]) }}" method="PUT">
+    <form action="{{ route('usuarios.update', ['usuario' => $usuario->id]) }}" method="POST">
         @csrf
+        @method('PUT')
+
         <div class="form-group">
             <label for="name">Nome:</label>
-            <input type="text" id="name" name="name" value="{{ old('name', $usuario->name) }}" required>
+            <input type="text" id="name" name="name" value="{{ old('name', $usuario->name) }}" class="form-control" required>
         </div>
 
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" value="{{ old('email', $usuario->email) }}" required>
+            <input type="email" id="email" name="email" value="{{ old('email', $usuario->email) }}" class="form-control" required>
         </div>
 
         <div class="form-group">
             <label for="password">Senha:</label>
-            <input type="password" id="password" name="password" value="{{ old('password', $usuario->password) }}" required>
+            <div class="input-group">
+                <input type="password" id="password" name="password" value="{{ old('password', $usuario->password) }}" class="form-control" required>
+                <span class="input-group-text" onclick="togglePassword('password', this)">
+                    <i class="bi bi-eye"></i>
+                </span>
+            </div>
         </div>
-
 
         <div class="form-group">
             <label for="password_confirmation">Confirme a senha:</label>
-            <input type="password" name="password_confirmation" value="{{ old('password', $usuario->password) }}" required>
+            <div class="input-group">
+                <input type="password" id="password_confirmation" name="password_confirmation" value="{{ old('password', $usuario->password) }}" class="form-control" required>
+                <span class="input-group-text" onclick="togglePassword('password_confirmation', this)">
+                    <i class="bi bi-eye"></i>
+                </span>
+            </div>
         </div>
 
         <button type="submit" class="btn">Atualizar Usuário</button>
     </form>
+
+    <script>
+        function togglePassword(fieldId, el) {
+            const field = document.getElementById(fieldId);
+            const icon = el.querySelector('i');
+            if (field.type === "password") {
+                field.type = "text";
+                icon.classList.replace("bi-eye", "bi-eye-slash");
+            } else {
+                field.type = "password";
+                icon.classList.replace("bi-eye-slash", "bi-eye");
+            }
+        }
+    </script>
+
 </body>
 
 </html>
