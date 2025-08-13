@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Usuario extends Model
 {
+    public $timestamps = false;
+
     protected $fillable = [
         'name',
         'email',
@@ -20,7 +22,7 @@ class Usuario extends Model
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        // 'password' => 'hashed',
     ];
     use HasFactory;
 }
