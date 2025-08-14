@@ -107,9 +107,9 @@
         </div>
 
         <div class="form-group">
-            <label for="password">Senha:</label>
+            <label for="password">Senha (preencha apenas se quiser alterar):</label>
             <div class="input-group">
-                <input type="password" id="password" name="password" value="{{ old('password', $usuario->password) }}" class="form-control" required>
+                <input type="password" id="password" name="password" class="form-control">
                 <span class="input-group-text" onclick="togglePassword('password', this)">
                     <i class="bi bi-eye"></i>
                 </span>
@@ -119,15 +119,28 @@
         <div class="form-group">
             <label for="password_confirmation">Confirme a senha:</label>
             <div class="input-group">
-                <input type="password" id="password_confirmation" name="password_confirmation" value="{{ old('password', $usuario->password) }}" class="form-control" required>
+                <input type="password" id="password_confirmation" name="password_confirmation" class="form-control">
                 <span class="input-group-text" onclick="togglePassword('password_confirmation', this)">
                     <i class="bi bi-eye"></i>
                 </span>
             </div>
         </div>
 
+        <div class="form-group">
+            <label>Grupo de Usuário</label>
+            <select name="role" class="form-control" required>
+                <option value="">Selecione um grupo</option>
+                @foreach($roles as $role)
+                <option value="{{ $role->id }}" {{ $usuario->hasRole($role->name) ? 'selected' : '' }}>
+                    {{ $role->name }}
+                </option>
+                @endforeach
+            </select>
+        </div>
+
         <button type="submit" class="btn">Atualizar Usuário</button>
     </form>
+
 
     <script>
         function togglePassword(fieldId, el) {

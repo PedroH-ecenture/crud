@@ -131,8 +131,23 @@
                 </span>
             </div>
 
+            <div class="form-group">
+                <label>Grupo de Usuário</label>
+                <select name="role" class="form-control" required>
+                    <option value="">Selecione um grupo</option>
+                    @foreach($roles as $role)
+                    <option value="{{ $role->id }}">
+                        {{ $role->name }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+
             <button type="submit" class="btn">Criar Usuário</button>
         </form>
+
+
+
     </main>
 
     <script>

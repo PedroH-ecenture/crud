@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UsuarioRequest;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class UsuarioController extends Controller
 {
@@ -21,40 +22,51 @@ class UsuarioController extends Controller
 
     public function create()
     {
-        return view('usuarios.create');
-    }
-
-    public function update(UsuarioRequest $request, Usuario $usuario)
-    {
-        // Logic to update the user
-        $request->validated();
-
-        $usuario->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password,
-        ]);
-
-        return redirect()->route('usuarios.index')->with('success', 'Usuário atualizado com sucesso!');
-    }
-
-    public function edit(Usuario $usuario)
-    {
-        return view('usuarios.edit', ['usuario' => $usuario]);
+        $roles = Role::all();
+        return view('usuarios.create', compact('roles'));
     }
 
     public function store(UsuarioRequest $request)
     {
-        // Logic to store the user
         $request->validated();
-        Usuario::create([
+
+        // Criptografando a senha
+        $usuario = Usuario::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => $request->password,
-
+            'password' => bcrypt($request->password),
         ]);
 
+        // Atribuindo a role selecionada
+        $role = Role::find($request->role);
+        $usuario->assignRole($role);
+
         return redirect()->route('usuarios.index')->with('success', 'Usuário criado com sucesso!');
+    }
+
+    public function edit(Usuario $usuario)
+    {
+        $roles = Role::all();
+        return view('usuarios.edit', compact('usuario', 'roles'));
+    }
+
+    public function update(UsuarioRequest $request, Usuario $usuario)
+    {
+        $request->validated();
+
+        $usuario->name = $request->name;
+        $usuario->email = $request->email;
+
+        if ($request->filled('password')) {
+            $usuario->password = bcrypt($request->password);
+        }
+
+        $usuario->save();
+
+        $role = Role::find($request->role);
+        $usuario->syncRoles([$role]);
+
+        return redirect()->route('usuarios.index')->with('success', 'Usuário atualizado com sucesso!');
     }
 
     public function destroy(Usuario $usuario)
