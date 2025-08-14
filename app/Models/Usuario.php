@@ -10,12 +10,13 @@ class Usuario extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'name',
         'email',
         'password',
+
     ];
 
     protected $hidden = [
@@ -25,5 +26,6 @@ class Usuario extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+
     ];
 }

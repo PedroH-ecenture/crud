@@ -81,7 +81,7 @@
 <body>
     <h1>Editar Usuário</h1>
 
-    <a href="{{ route('usuarios.index') }}" class="back-link">Voltar à página inicial</a>
+    <a href="{{ route('usuarios.index') }}" class="btn mb-3">Voltar à página inicial</a>
 
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -93,9 +93,8 @@
     </div>
     @endif
 
-    <form action="{{ route('usuarios.update', ['usuario' => $usuario->id]) }}" method="POST">
+    <form action="{{ route('usuarios.update', ['usuario' => $usuario->id]) }}" method="PUT">
         @csrf
-        @method('PUT')
 
         <div class="form-group">
             <label for="name">Nome:</label>

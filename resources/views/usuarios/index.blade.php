@@ -46,6 +46,12 @@
             border-color: #2d2;
             color: #fff;
         }
+
+        .alert-error {
+            background: rgba(221, 34, 34, 1);
+            border-color: rgba(221, 34, 34, 1);
+            color: #000000ff;
+        }
     </style>
 </head>
 
@@ -72,14 +78,33 @@
         </script>
         @endif
 
+        @if(session('error'))
+        <div class="alert alert-error" id="error-alert">
+            {{ session('error') }}
+        </div>
+        <script>
+            setTimeout(() => {
+                const alert = document.getElementById('error-alert');
+                if (alert) {
+                    alert.style.transition = 'opacity 0.5s';
+                    alert.style.opacity = '0';
+                    setTimeout(() => alert.remove(), 500);
+                }
+            }, 3000); // desaparece após 3 segundos
+        </script>
+        @endif
+
         @forelse($usuarios as $usuario)
         <div class="card mb-3 p-3">
             <h5 class="text-white">ID: {{ $usuario->id }} - {{ $usuario->name }}</h5>
             <p class="text-white">E-mail: {{ $usuario->email }}</p>
+
+            @if ($usuario->id !== 1)
             <div>
                 <a href="{{ route('usuarios.show',['usuario'=>$usuario->id]) }}" class="btn btn-sm me-2">Ver</a>
                 <a href="{{ route('usuarios.edit',['usuario'=>$usuario->id]) }}" class="btn btn-sm">Editar</a>
             </div>
+            @endif
         </div>
         @empty
         <p class="text-muted">Nenhum usuário encontrado.</p>

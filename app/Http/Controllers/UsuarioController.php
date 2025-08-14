@@ -28,6 +28,7 @@ class UsuarioController extends Controller
     {
         // Logic to update the user
         $request->validated();
+
         $usuario->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -50,6 +51,7 @@ class UsuarioController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
+
         ]);
 
         return redirect()->route('usuarios.index')->with('success', 'Usuário criado com sucesso!');

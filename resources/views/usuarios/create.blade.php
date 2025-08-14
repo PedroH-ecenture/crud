@@ -96,7 +96,7 @@
 </head>
 
 <body>
-    @include('layouts.header')
+
 
     <main class="container">
         <h1 class="mb-4">Criar Novo Usuário</h1>
@@ -149,7 +149,7 @@
         }
     </script>
 
-    @include('layouts.footer')
+
 </body>
 
 </html>

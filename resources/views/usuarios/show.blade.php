@@ -70,9 +70,8 @@
         <p><strong>ID:</strong> {{ $usuario->id }}</p>
         <p><strong>Nome:</strong> {{ $usuario->name }}</p>
         <p><strong>E-mail:</strong> {{ $usuario->email }}</p>
-        <p><strong>Cadastrado:</strong> {{ \Carbon\Carbon::parse($usuario->created_at)->format('d/m/Y H:i') }}</p>
-        <p><strong>Editado:</strong> {{ \Carbon\Carbon::parse($usuario->updated_at)->format('d/m/Y H:i') }}</p>
-
+        <p><strong>Criado:</strong> {{ $usuario->created_at ? \Carbon\Carbon::parse($usuario->created_at)->format('d/m/Y H:i') : 'Nunca' }}</p>
+        <p><strong>Editado:</strong> {{ $usuario->updated_at ? \Carbon\Carbon::parse($usuario->updated_at)->format('d/m/Y H:i') : 'Nunca' }}</p>
         <div>
             <form method="POST" action="{{ route('usuarios.destroy', ['usuario' => $usuario->id]) }}" style="display:inline-block; margin:0;">
                 @csrf

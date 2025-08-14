@@ -23,10 +23,10 @@
 
         .login-container {
             background: #1e1e1e;
-            padding: 2rem;
+            padding: 2.5rem;
             border-radius: 8px;
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
         }
 
         h1 {
@@ -42,7 +42,7 @@
             background: #1e1e1e;
             border: 1px solid #333;
             color: #fff;
-            padding: 0.5rem;
+            padding: 0.75rem;
         }
 
         input::placeholder {
@@ -54,7 +54,7 @@
             color: #fff;
             border: 1px solid #444;
             width: 100%;
-            padding: 0.5rem;
+            padding: 0.75rem;
         }
 
         .btn:hover {
@@ -68,13 +68,31 @@
             padding: 0.75rem 1rem;
             margin-bottom: 1rem;
         }
+
+        /* Ícone do olho dentro do input */
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .toggle-password:hover {
+            color: #fff;
+        }
     </style>
 </head>
 
 <body>
 
     <div class="login-container">
-        <h1>Login</h1>
+        <h1>Login pra página</h1>
 
         @if ($errors->any())
         <div class="alert alert-danger">
@@ -91,16 +109,14 @@
 
             <div class="form-group">
                 <label for="email">Usuário:</label>
-                <input type="email" name="email" placeholder="Seu e-mail" required>
+                <input type="email" name="email" class="form-control" placeholder="Seu e-mail" required>
             </div>
 
             <div class="form-group">
                 <label for="password">Senha:</label>
-                <div class="input-group">
+                <div class="password-wrapper">
                     <input type="password" id="password" name="password" class="form-control" placeholder="Digite sua senha" required>
-                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('password', this)">
-                        <i class="bi bi-eye"></i>
-                    </button>
+                    <i class="bi bi-eye toggle-password" onclick="togglePassword('password', this)"></i>
                 </div>
             </div>
 
@@ -109,15 +125,14 @@
     </div>
 
     <script>
-        function togglePassword(fieldId, toggleIcon) {
+        function togglePassword(fieldId, iconElement) {
             const field = document.getElementById(fieldId);
-            const icon = toggleIcon.querySelector('i');
             if (field.type === "password") {
                 field.type = "text";
-                icon.classList.replace("bi-eye", "bi-eye-slash");
+                iconElement.classList.replace("bi-eye", "bi-eye-slash");
             } else {
                 field.type = "password";
-                icon.classList.replace("bi-eye-slash", "bi-eye");
+                iconElement.classList.replace("bi-eye-slash", "bi-eye");
             }
         }
     </script>
