@@ -72,15 +72,10 @@
         <p><strong>E-mail:</strong> {{ $usuario->email }}</p>
         <p><strong>Criado:</strong> {{ $usuario->created_at ? \Carbon\Carbon::parse($usuario->created_at)->format('d/m/Y H:i') : 'Nunca' }}</p>
         <p><strong>Editado:</strong> {{ $usuario->updated_at ? \Carbon\Carbon::parse($usuario->updated_at)->format('d/m/Y H:i') : 'Nunca' }}</p>
-        <div>
-            <form method="POST" action="{{ route('usuarios.destroy', ['usuario' => $usuario->id]) }}" style="display:inline-block; margin:0;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn">Deletar Usuário</button>
-            </form>
 
-            <a href="{{ route('usuarios.index') }}" class="btn ms-2">Voltar à página inicial</a>
-        </div>
+
+        <a href="{{ route('usuarios.index') }}" class="btn ms-2">Voltar à página inicial</a>
+    </div>
     </div>
 </body>
 

@@ -2,31 +2,43 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UsuarioController;
-use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
 Route::get("/", [LoginController::class, 'index'])->name('login');
-route::post("/login", [LoginController::class, 'loginProccess'])->name('login.proccess');
+Route::post("/login", [LoginController::class, 'loginProccess'])->name('login.proccess');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
+Route::group(['middleware' => 'auth'], function () {
 
-route::group(['middleware' => 'auth'], function () {
-    Route::get("/usuario-index", [UsuarioController::class, 'index'])->name('usuarios.index');
-    Route::get("/create-usuario", [UsuarioController::class, 'create'])->name('usuarios.create');
-    Route::get("/show-usuario/{usuario}", [UsuarioController::class, 'show'])->name('usuarios.show');
-    Route::get("/update-usuario/{usuario}", [UsuarioController::class, 'update'])->name('usuarios.update');
-    Route::post("/store-usuario", [UsuarioController::class, 'store'])->name('usuarios.store');
-    Route::delete("/destroy-usuario/{usuario}", [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
-    Route::get("/edit-usuario/{usuario}", [UsuarioController::class, 'edit'])->name('usuarios.edit');
+    // Listar e visualizar usuários (usuarios.ver)
+    Route::get("/usuario-index", [UsuarioController::class, 'index'])
+        ->middleware('permission:usuarios.ver')
+        ->name('usuarios.index');
+
+    Route::get("/show-usuario/{usuario}", [UsuarioController::class, 'show'])
+        ->middleware('permission:usuarios.ver')
+        ->name('usuarios.show');
+
+    // Criar usuários (usuarios.criar)
+    Route::get("/create-usuario", [UsuarioController::class, 'create'])
+        ->middleware('permission:usuarios.criar')
+        ->name('usuarios.create');
+
+    Route::post("/store-usuario", [UsuarioController::class, 'store'])
+        ->middleware('permission:usuarios.criar')
+        ->name('usuarios.store');
+
+    // Editar usuários (usuarios.editar)
+    Route::get("/edit-usuario/{usuario}", [UsuarioController::class, 'edit'])
+        ->middleware('permission:usuarios.editar')
+        ->name('usuarios.edit');
+
+    Route::get("/update-usuario/{usuario}", [UsuarioController::class, 'update'])
+        ->middleware('permission:usuarios.editar')
+        ->name('usuarios.update');
+
+    // Deletar usuários (usuarios.deletar)
+    Route::delete("/destroy-usuario/{usuario}", [UsuarioController::class, 'destroy'])
+        ->middleware('permission:usuarios.deletar')
+        ->name('usuarios.destroy');
 });

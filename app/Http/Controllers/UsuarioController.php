@@ -6,6 +6,7 @@ use App\Http\Requests\UsuarioRequest;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
@@ -30,11 +31,11 @@ class UsuarioController extends Controller
     {
         $request->validated();
 
-        // Criptografando a senha
+        // Cria usuário usando Hash::make para garantir hash correto
         $usuario = Usuario::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => $request->password,
         ]);
 
         // Atribuindo a role selecionada
@@ -57,12 +58,14 @@ class UsuarioController extends Controller
         $usuario->name = $request->name;
         $usuario->email = $request->email;
 
+        // Atualiza a senha apenas se preenchida
         if ($request->filled('password')) {
-            $usuario->password = bcrypt($request->password);
+            $usuario->password = $request->password; // SEM Hash::make
         }
 
         $usuario->save();
 
+        // Atualiza a role
         $role = Role::find($request->role);
         $usuario->syncRoles([$role]);
 
