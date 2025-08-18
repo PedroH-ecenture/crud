@@ -26,10 +26,20 @@ class LoginController extends Controller
         return back()->withInput()->with('error', 'Usuário ou senha inválidos.');
     }
 
-
     public function logout()
     {
         Auth::logout();
         return redirect()->route('login');
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        // Se o usuário tem a role Delete-only
+        if ($user->hasRole('Delete-only')) {
+            return redirect()->route('viewrole'); // vai direto pra viewrole
+        }
+
+        // Caso contrário, redireciona normalmente
+        return redirect()->intended($this->redirectPath());
     }
 }

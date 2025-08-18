@@ -66,6 +66,18 @@
         <a href="{{ route('usuarios.create') }}" class="btn btn-sm mb-4">Criar Novo Usuário</a>
         @endcan
 
+        @auth
+        @php $user = auth()->user(); @endphp
+
+        @if($user->can('grupos.ver'))
+        <a href="{{ route('viewrole') }}" class="btn btn-sm mb-4">Ver roles</a>
+        @endif
+
+        @if($user->can('grupos.criar'))
+        <a href="{{ route('roles.createrole') }}" class="btn btn-sm mb-4">Criar role</a>
+        @endif
+        @endauth
+
         {{-- Mensagens de sucesso/erro --}}
         @if(session('success'))
         <div class="alert alert-success" id="success-alert">{{ session('success') }}</div>

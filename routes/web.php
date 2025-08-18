@@ -1,14 +1,38 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Contracts\Role;
 
 Route::get("/", [LoginController::class, 'index'])->name('login');
 Route::post("/login", [LoginController::class, 'loginProccess'])->name('login.proccess');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => 'auth'], function () {
+
+    // rotas dos roles
+
+    Route::get('/createrole', [RoleController::class, 'createrole'])
+        ->middleware('permission:grupos.criar')
+        ->name('roles.createrole');
+    Route::get('/viewrole', [RoleController::class, 'viewrole'])
+        ->middleware('permission:grupos.ver')
+        ->name('viewrole');
+    Route::post('/roles', [RoleController::class, 'storerole'])
+        ->middleware('role:Super-admin')
+        ->name('roles.storerole');
+    Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])
+        ->middleware('permission:grupos.editar')
+        ->name('roles.editroles');
+    Route::get('/roles/{role}', [RoleController::class, 'update'])
+        ->name('roles.updateroles');
+    Route::delete('/roles/{role}', [RoleController::class, 'destroy'])
+        ->middleware('permission:grupos.deletar')
+        ->name('roles.destroy');
+    Route::get('/roles/create-delete-only', [RoleController::class, 'criarDeleteOnlyRole']);
+
 
     // Listar e visualizar usuários (usuarios.ver)
     Route::get("/usuario-index", [UsuarioController::class, 'index'])
