@@ -10,11 +10,19 @@ use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $usuarios = Usuario::orderByDesc('id')->get();
-        return view('usuarios.index', ['usuarios' => $usuarios]);
+        $query = Usuario::query();
+
+        if ($request->filled('role_filter')) {
+            $query->role($request->role_filter); // Método do Spatie para filtrar por role
+        }
+
+        $usuarios = $query->orderByDesc('id')->get();
+
+        return view('usuarios.index', compact('usuarios'));
     }
+
 
     public function show(Usuario $usuario)
     {

@@ -67,16 +67,34 @@
         @endcan
 
         @auth
-        @php $user = auth()->user(); @endphp
+        @php
+        $user = auth()->user();
+        $roles = Spatie\Permission\Models\Role::all(); // pega todas as roles
+        @endphp
 
         @if($user->can('grupos.ver'))
-        <a href="{{ route('viewrole') }}" class="btn btn-sm mb-4">Ver roles</a>
-        @endif
+        <div class="d-flex align-items-center mb-4">
+            <a href="{{ route('viewrole') }}" class="btn btn-sm me-3">Ver roles</a>
 
-        @if($user->can('grupos.criar'))
-        <a href="{{ route('roles.createrole') }}" class="btn btn-sm mb-4">Criar role</a>
+            @if($user->can('grupos.criar'))
+            <a href="{{ route('roles.createrole') }}" class="btn btn-sm me-3">Criar role</a>
+            @endif
+        </div>
         @endif
         @endauth
+
+        <form method="GET" action="{{ route('usuarios.index') }}">
+            <select name="role_filter" class="form-select form-select-sm d-inline-block"
+                style="width:auto; display:inline; background-color:#000; color:#fff; border-color:#444;">
+                <option value="">Filtrar por Role</option>
+                @foreach($roles as $role)
+                <option value="{{ $role->name }}" {{ request('role_filter') == $role->name ? 'selected' : '' }}>
+                    {{ $role->name }}
+                </option>
+                @endforeach
+            </select>
+            <button type="submit" class="btn btn-sm btn-secondary">Filtrar</button><br><br>
+        </form>
 
         {{-- Mensagens de sucesso/erro --}}
         @if(session('success'))
@@ -117,7 +135,7 @@
             <div>
                 {{-- Botão Ver --}}
                 @can('usuarios.ver')
-                <a href="{{ route('usuarios.show',['usuario'=>$usuario->id]) }}" class="btn btn-sm me-2">Ver</a>
+                <a href="{{ route('usuarios.show',['usuario'=>$usuario->id]) }}" class="btn btn-sm">Ver</a>
                 @endcan
 
                 {{-- Botão Editar --}}
@@ -137,7 +155,7 @@
             @endif
         </div>
         @empty
-        <p class="text-muted">Nenhum usuário encontrado.</p>
+        <p class="text-white">Nenhum usuário encontrado.</p>
         @endforelse
     </main>
 
