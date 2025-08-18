@@ -3,11 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Hash;
 
-class Usuario extends Model
+class Usuario extends Authenticatable
 {
-    public $timestamps = false;
+    use HasFactory, Notifiable, HasRoles;
+
+    protected $guard_name = 'web'; // importante para Spatie
+
+    protected $table = 'usuarios';
+
+    public $timestamps = true;
 
     protected $fillable = [
         'name',
@@ -22,7 +31,26 @@ class Usuario extends Model
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        // 'password' => 'hashed',
+        'password' => 'hashed',
     ];
-    use HasFactory;
+
+    /**
+     * Sobrescrevendo para que Super-admin tenha acesso a tudo
+     */
+    public function hasPermissionTo($permission, $guardName = null)
+    {
+        if ($this->hasRole('Super-admin')) {
+            return true;
+        }
+
+        return $this->getAllPermissions()->contains('name', $permission);
+    }
+
+    /**
+     * Criptografa a senha automaticamente ao setar
+     */
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = Hash::make($value);
+    }
 }

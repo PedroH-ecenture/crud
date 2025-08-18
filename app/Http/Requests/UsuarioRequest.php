@@ -27,7 +27,7 @@ class UsuarioRequest extends FormRequest
 
             'email' => 'required|email|unique:usuarios,email,' . ($usuarioId ? $usuarioId->id : 'null'),
 
-            'password' => 'required|min:6',
+            'password' => 'required|confirmed|min:6',
         ];
     }
 
@@ -43,6 +43,8 @@ class UsuarioRequest extends FormRequest
             'email.unique' => 'Este e-mail já está cadastrado.',
 
             'password.required' => 'A senha precisa ser válida.',
+
+            'password.confirmed' => 'A senha precisa ser a mesma.',
 
             'password.min' => 'A senha precisa ter ao menos :min caracteres.',
 
