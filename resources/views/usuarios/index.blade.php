@@ -59,7 +59,7 @@
     @include('layouts.header')
 
     <main class="container py-5">
-        <h1 class="mb-4">Página Inicial</h1>
+        <h1 class="mb-4">Home</h1>
 
         {{-- Botão Criar Usuário --}}
         @can('usuarios.criar')
