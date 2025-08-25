@@ -11,13 +11,15 @@ services:
       - ./:/var/www
     networks:
       - crud-network
+    depends_on:
+      - db
 
   webserver:
     image: nginx:alpine
     container_name: crud_webserver
     restart: unless-stopped
     ports:
-      - "80:80" # mapeia porta 80 do host
+      - "80:80"
     volumes:
       - ./:/var/www
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
@@ -26,6 +28,25 @@ services:
     networks:
       - crud-network
 
+  db:
+    image: mysql:8.0
+    container_name: crud_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ecenture
+      MYSQL_ROOT_PASSWORD: ecenture
+    ports:
+      - "3306:3306"
+    networks:
+      - crud-network
+    volumes:
+      - db_data:/var/lib/mysql
+
 networks:
   crud-network:
     driver: bridge
+
+volumes:
+  db_data:
