@@ -74,7 +74,7 @@
 
         @if($user->can('grupos.ver'))
         <div class="d-flex align-items-center mb-4">
-            <a href="{{ route('viewrole') }}" class="btn btn-sm me-3">Ver roles</a>
+            <a href="{{ route('viewrole') }}" class="btn btn-sm me-3">Ver roles existentes</a>
 
             @if($user->can('grupos.criar'))
             <a href="{{ route('roles.createrole') }}" class="btn btn-sm me-3">Criar role</a>
